@@ -1,0 +1,182 @@
+name: Release Native Host
+
+# Triggered manually or by pushing a tag like native-host/v1.0.3
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release (e.g. 1.0.3) — must match nativeHostVersion in packages/cli/package.json'
+        required: true
+  push:
+    tags:
+      - 'native-host/v*'
+
+jobs:
+  build-sign-notarize-release:
+    name: Build · Sign · Notarize · Release
+    # macOS runner is required for codesign and notarytool
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install native-host dependencies
+        run: bun install
+        working-directory: extension/native-host
+
+      # ── Build ──────────────────────────────────────────────────────────────
+      - name: Build all platform binaries
+        run: bun extension/native-host/build.ts --all
+
+      # build.ts outputs darwin-*, but postinstall.js downloads mac-* (getPlatform
+      # maps process.platform 'darwin' → 'mac'). Rename to match.
+      - name: Rename darwin→mac for postinstall URL compatibility
+        run: |
+          cd extension/native-host/dist
+          mv thinkbrowse-host-darwin-arm64 thinkbrowse-host-mac-arm64
+          mv thinkbrowse-host-darwin-x64   thinkbrowse-host-mac-x64
+
+      # ── Code signing ───────────────────────────────────────────────────────
+      - name: Import Developer ID Application certificate
+        env:
+          MACOS_SIGNING_CERT_BASE64: ${{ secrets.MACOS_SIGNING_CERT_BASE64 }}
+          MACOS_SIGNING_CERT_PASSWORD: ${{ secrets.MACOS_SIGNING_CERT_PASSWORD }}
+        run: |
+          echo "$MACOS_SIGNING_CERT_BASE64" | base64 --decode > /tmp/cert.p12
+
+          # Create an isolated keychain so we don't touch the runner's login keychain
+          security create-keychain -p "" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "" build.keychain
+          security set-keychain-settings -lut 7200 build.keychain
+
+          security import /tmp/cert.p12 \
+            -k build.keychain \
+            -P "$MACOS_SIGNING_CERT_PASSWORD" \
+            -T /usr/bin/codesign \
+            -T /usr/bin/security
+
+          # Allow codesign to access the key without a UI password prompt
+          security set-key-partition-list \
+            -S apple-tool:,apple:,codesign: \
+            -s -k "" build.keychain
+
+          rm /tmp/cert.p12
+
+      - name: Sign macOS binaries
+        env:
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          DIST=extension/native-host/dist
+          for binary in thinkbrowse-host-mac-arm64 thinkbrowse-host-mac-x64; do
+            echo "Signing $binary ..."
+            codesign \
+              --force \
+              --options runtime \
+              --sign "Developer ID Application: David Dundas ($APPLE_TEAM_ID)" \
+              "$DIST/$binary"
+            codesign --verify --deep --strict --verbose=2 "$DIST/$binary"
+            echo "  signed OK"
+          done
+
+      # ── Notarization ───────────────────────────────────────────────────────
+      - name: Notarize macOS binaries
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        run: |
+          DIST=extension/native-host/dist
+          for binary in thinkbrowse-host-mac-arm64 thinkbrowse-host-mac-x64; do
+            echo "Notarizing $binary ..."
+            zip "/tmp/${binary}.zip" "$DIST/$binary"
+
+            xcrun notarytool submit "/tmp/${binary}.zip" \
+              --apple-id    "$APPLE_ID" \
+              --password    "$APPLE_APP_PASSWORD" \
+              --team-id     "$APPLE_TEAM_ID" \
+              --wait
+
+            # Staple embeds the notarization ticket so Gatekeeper works offline
+            xcrun stapler staple "$DIST/$binary"
+            xcrun stapler validate "$DIST/$binary"
+
+            rm "/tmp/${binary}.zip"
+            echo "  notarized and stapled OK"
+          done
+
+      # ── Checksums ──────────────────────────────────────────────────────────
+      # postinstall.js downloads checksums.txt from the same release and verifies
+      # SHA256 before executing the binary. Format: "<hash>  <filename>"
+      - name: Generate checksums.txt
+        run: |
+          cd extension/native-host/dist
+          shasum -a 256 \
+            thinkbrowse-host-mac-arm64 \
+            thinkbrowse-host-mac-x64 \
+            thinkbrowse-host-linux-arm64 \
+            thinkbrowse-host-linux-x64 \
+            thinkbrowse-host-windows-x64.exe \
+            > checksums.txt
+          echo "checksums.txt:"
+          cat checksums.txt
+
+      # ── Release ────────────────────────────────────────────────────────────
+      - name: Determine release version
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "version=${{ github.event.inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            # Tag format: native-host/v1.0.3 → strip prefix
+            TAG="${GITHUB_REF_NAME#native-host/v}"
+            echo "version=$TAG" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${{ steps.ver.outputs.version }}"
+          DIST=extension/native-host/dist
+          TAG="native-host/v${VERSION}"
+
+          gh release create "$TAG" \
+            --repo "${{ github.repository }}" \
+            --title "Native Host v${VERSION}" \
+            --notes "$(cat <<'NOTES'
+          ## ThinkBrowse Native Host
+
+          macOS binaries are **signed** (Developer ID Application) and **notarized** by Apple.
+          Linux and Windows binaries are unsigned — no extra steps needed.
+
+          ### Installation
+          Installed automatically via \`npm install -g @thinkbrowse/cli\`.
+          To install manually, see the [README](https://github.com/${{ github.repository }}#readme).
+
+          ### Files
+          | File | Platform |
+          |------|----------|
+          | thinkbrowse-host-mac-arm64 | macOS Apple Silicon |
+          | thinkbrowse-host-mac-x64 | macOS Intel |
+          | thinkbrowse-host-linux-arm64 | Linux ARM64 |
+          | thinkbrowse-host-linux-x64 | Linux x64 |
+          | thinkbrowse-host-windows-x64.exe | Windows x64 |
+          | checksums.txt | SHA256 checksums |
+          NOTES
+          )" \
+            "${DIST}/thinkbrowse-host-mac-arm64" \
+            "${DIST}/thinkbrowse-host-mac-x64" \
+            "${DIST}/thinkbrowse-host-linux-arm64" \
+            "${DIST}/thinkbrowse-host-linux-x64" \
+            "${DIST}/thinkbrowse-host-windows-x64.exe" \
+            "${DIST}/checksums.txt"
+
+          echo ""
+          echo "Release published: https://github.com/${{ github.repository }}/releases/tag/${TAG}"
