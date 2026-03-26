@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ThinkBrowse Sidepanel — UI Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #e5e7eb;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    gap: 32px;
+    padding: 40px;
+    min-height: 100vh;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .col { display: flex; flex-direction: column; gap: 10px; }
+  .col-label {
+    font-size: 11px; font-weight: 600; color: #6b7280;
+    text-transform: uppercase; letter-spacing: 0.08em; text-align: center;
+  }
+
+  /* ── Extension shell ─────────────────────────────── */
+  .panel {
+    width: 360px;
+    background: #fdfbf9;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 14px 14px 0;
+  }
+  .panel-title {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 21px; color: #111827;
+  }
+  .settings-btn {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: #f3f4f6; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #6b7280;
+  }
+
+  .tab-bar {
+    display: flex; background: #f3f4f6;
+    border-radius: 10px; padding: 3px; margin: 10px 14px;
+  }
+  .tab {
+    flex: 1; padding: 6px 0; text-align: center;
+    font-size: 13px; font-weight: 600; border-radius: 7px;
+    cursor: pointer; color: #6b7280; border: none; background: transparent;
+  }
+  .tab.active {
+    background: white; color: #111827;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  .panel-content {
+    display: flex; flex-direction: column;
+    gap: 10px; padding: 0 14px 14px;
+    overflow-y: auto;
+  }
+
+  /* task input */
+  .task-input-wrap {
+    background: white; border-radius: 14px;
+    padding: 10px 12px 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .task-textarea {
+    width: 100%; border: none; outline: none;
+    font-family: 'Inter', sans-serif; font-size: 13px; color: #111827;
+    resize: none; background: transparent; line-height: 1.5; min-height: 40px;
+  }
+  .task-textarea::placeholder { color: #9ca3af; }
+  .task-row {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-top: 6px;
+  }
+  .task-hint { font-size: 11px; color: #9ca3af; max-width: 160px; line-height: 1.4; }
+  .run-btn {
+    font-size: 13px; font-weight: 600; padding: 6px 14px;
+    border-radius: 10px; background: #d1d5db; color: #9ca3af;
+    border: none; cursor: default;
+  }
+  .run-btn.enabled { background: #ea580c; color: white; cursor: pointer; }
+
+  /* YOU ASKED card */
+  .goal-card {
+    padding: 10px 12px;
+    background: #fff7ed; border: 1px solid #fed7aa; border-radius: 12px;
+  }
+  .goal-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 3px;
+  }
+  .goal-text {
+    font-size: 12px; color: #92400e; line-height: 1.4;
+    overflow: hidden; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  }
+
+  /* state card */
+  .state-card {
+    padding: 14px; background: white;
+    border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .state-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 10px;
+  }
+  .state-header-left { display: flex; align-items: center; gap: 8px; }
+
+  .pulse-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ea580c; flex-shrink: 0;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:.5; transform:scale(.85); }
+  }
+  @keyframes pulse-circle {
+    0%,100% { box-shadow: 0 0 0 0 rgba(234,88,12,.4); }
+    50%      { box-shadow: 0 0 0 4px rgba(234,88,12,0); }
+  }
+
+  .state-title { font-size: 13px; font-weight: 600; color: #111827; }
+  .done-title  { font-family: 'Instrument Serif', Georgia, serif; font-size: 16px; color: #111827; }
+
+  .stop-btn {
+    font-size: 12px; font-weight: 600; padding: 4px 11px;
+    border-radius: 8px; background: #fee2e2; color: #b91c1c;
+    border: none; cursor: pointer;
+  }
+  .new-task-btn {
+    font-size: 13px; font-weight: 600; padding: 5px 13px;
+    border-radius: 10px; background: #ea580c; color: white;
+    border: none; cursor: pointer;
+  }
+
+  .thinking {
+    font-size: 12px; color: #6b7280; line-height: 1.5;
+    margin-bottom: 10px;
+    overflow: hidden; display: -webkit-box;
+    -webkit-line-clamp: 5; -webkit-box-orient: vertical;
+  }
+
+  .section-label {
+    font-size: 10px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #9ca3af; margin-bottom: 7px;
+  }
+
+  .log-wrap        { max-height: 160px; overflow-y: auto; }
+  .log-wrap-tall   { max-height: 240px; overflow-y: auto; }
+
+  /* execution log */
+  .step-row { display: flex; gap: 8px; }
+  .step-col {
+    display: flex; flex-direction: column;
+    align-items: center; flex-shrink: 0; width: 28px;
+  }
+  .circle {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px; font-weight: 500; color: white; flex-shrink: 0;
+  }
+  .circle.done   { background: #22c55e; border: 2px solid #22c55e; }
+  .circle.active { background: #ea580c; border: 2px solid #ea580c; animation: pulse-circle 1.5s ease-in-out infinite; }
+  .step-line { flex:1; width:2px; background:#f3f4f6; min-height:6px; }
+
+  .step-body { padding-top: 5px; padding-bottom: 7px; min-width:0; flex:1; }
+  .step-body.last { padding-bottom: 0; }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace; font-size: 10px;
+    font-weight: 500; padding: 2px 6px; border-radius: 4px;
+    letter-spacing: 0.04em; display: inline-block;
+  }
+  .badge-nav      { background:#dbeafe; color:#1d4ed8; }
+  .badge-interact { background:#dcfce7; color:#15803d; }
+  .badge-extract  { background:#fef3c7; color:#92400e; }
+  .badge-snap     { background:#f3f4f6; color:#374151; }
+  .badge-wait     { background:#ede9fe; color:#6d28d9; }
+
+  .step-detail {
+    font-size: 11px; color: #6b7280; margin: 2px 0 0;
+    overflow: hidden; display: -webkit-box;
+    -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    line-height: 1.4;
+  }
+
+  /* output box */
+  .output-box {
+    padding: 10px 12px; background: #f9fafb;
+    border-radius: 10px; margin-bottom: 10px;
+  }
+  .output-text {
+    font-size: 12px; color: #374151; line-height: 1.6;
+    white-space: pre-wrap; overflow-wrap: break-word;
+    max-height: 200px; overflow-y: auto; margin: 0;
+  }
+
+  /* footer */
+  .panel-footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 9px 14px; border-top: 1px solid #f3f4f6;
+    background: #fdfbf9; flex-shrink: 0;
+  }
+  .footer-status { font-size: 11px; color: #9ca3af; }
+  .footer-credits { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #374151; }
+  .topup-btn {
+    font-size: 11px; font-weight: 600; padding: 2px 7px;
+    border-radius: 5px; border: 1.5px solid #ea580c;
+    color: #ea580c; background: transparent; cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     PANEL 1 — RUNNING STATE
+══════════════════════════════════════════════ -->
+<div class="col">
+  <p class="col-label">Running state</p>
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">ThinkBrowse</span>
+      <button class="settings-btn">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab active">Agent</button>
+      <button class="tab">Record</button>
+    </div>
+
+    <div class="panel-content">
+
+      <!-- task input (disabled while running) -->
+      <div class="task-input-wrap" style="opacity:.5;pointer-events:none">
+        <textarea class="task-textarea" placeholder="Describe a task for your browser..." rows="2"></textarea>
+        <div class="task-row">
+          <span class="task-hint">Cloud reasoning, local browser execution via extension.</span>
+          <button class="run-btn">Run Agent</button>
+        </div>
+      </div>
+
+      <!-- YOU ASKED -->
+      <div class="goal-card">
+        <p class="goal-label">You asked</p>
+        <div class="goal-text">search Amazon for noise-cancelling headphones under $150 and find the best-rated option</div>
+      </div>
+
+      <!-- Running card -->
+      <div class="state-card">
+        <div class="state-header">
+          <div class="state-header-left">
+            <span class="pulse-dot"></span>
+            <span class="state-title">Step 4</span>
+          </div>
+          <button class="stop-btn">Stop</button>
+        </div>
+
+        <!-- Agent thinking (up to 5 lines) -->
+        <p class="thinking">I can see the search results page. I need to apply the price filter to show only items under $150, then sort by average customer review to find the best-rated option in that price range. I'll click the price filter first.</p>
+
+        <!-- Action log -->
+        <p class="section-label">Actions</p>
+        <div class="log-wrap">
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">1</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-nav">NAVIGATE</span>
+              <p class="step-detail">https://www.amazon.com</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">2</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-interact">TYPE</span>
+              <p class="step-detail">noise-cancelling headphones under $150</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">3</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-snap">SNAP</span>
+              <p class="step-detail">Captured search results page</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle active">4</div>
+            </div>
+            <div class="step-body last">
+              <span class="badge badge-interact">CLICK</span>
+              <p class="step-detail">Price: Up to $150 filter</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel-footer">
+      <span class="footer-status">Running</span>
+      <div class="footer-credits">Credits: <strong>91</strong> <button class="topup-btn">Top Up</button></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════
+     PANEL 2 — DONE STATE
+══════════════════════════════════════════════ -->
+<div class="col">
+  <p class="col-label">Done state</p>
+  <div class="panel">
+    <div class="panel-header">
+      <span class="panel-title">ThinkBrowse</span>
+      <button class="settings-btn">
+        <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+
+    <div class="tab-bar">
+      <button class="tab active">Agent</button>
+      <button class="tab">Record</button>
+    </div>
+
+    <div class="panel-content">
+
+      <!-- YOU ASKED -->
+      <div class="goal-card">
+        <p class="goal-label">You asked</p>
+        <div class="goal-text">search Amazon for noise-cancelling headphones under $150 and find the best-rated option</div>
+      </div>
+
+      <!-- Terminal card -->
+      <div class="state-card">
+        <div class="state-header">
+          <p class="done-title">Done</p>
+          <button class="new-task-btn">New task</button>
+        </div>
+
+        <!-- Output ABOVE action log, in #f9fafb box -->
+        <div class="output-box">
+          <p class="output-text">The best-rated noise-cancelling headphones under $150 on Amazon are the Anker Soundcore Life Q35 (4.4★, 42,000+ reviews, $79.99). Features: multi-mode ANC, 40-hour battery, LDAC Hi-Res audio. Runner-up: Sony WH-CH720N (4.3★, $99.99) — lighter build, better call quality.</p>
+        </div>
+
+        <!-- Action log below output, full 240px height -->
+        <p class="section-label">6 actions</p>
+        <div class="log-wrap-tall">
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">1</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-nav">NAVIGATE</span>
+              <p class="step-detail">https://www.amazon.com</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">2</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-interact">TYPE</span>
+              <p class="step-detail">noise-cancelling headphones under $150</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">3</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-snap">SNAP</span>
+              <p class="step-detail">Captured search results page</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">4</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-interact">CLICK</span>
+              <p class="step-detail">Price: Up to $150 filter</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">5</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-body">
+              <span class="badge badge-interact">CLICK</span>
+              <p class="step-detail">Avg. Customer Review sort option</p>
+            </div>
+          </div>
+
+          <div class="step-row">
+            <div class="step-col">
+              <div class="circle done">6</div>
+            </div>
+            <div class="step-body last">
+              <span class="badge badge-extract">EXTRACT</span>
+              <p class="step-detail">Top 3 products with ratings and prices</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="panel-footer">
+      <span class="footer-status">Completed</span>
+      <div class="footer-credits">Credits: <strong>91</strong> <button class="topup-btn">Top Up</button></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

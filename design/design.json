@@ -1,0 +1,113 @@
+{
+  "brand": {
+    "name": "ThinkBrowse",
+    "essence": "Professional AI tooling — warm, precise, status-driven",
+    "description": "A developer tool for monitoring and controlling AI browser automation sessions. The design is calm, readable, and transparent about agent state — warm cream base softens an otherwise technical UI.",
+    "keywords": [
+      "Serif",
+      "Clean",
+      "Minimal",
+      "Warm",
+      "Data-dense",
+      "Status-driven"
+    ]
+  },
+  "designPrinciples": [
+    {
+      "name": "Status Clarity",
+      "description": "Every state (running, blocked, completed, failed) must be immediately legible. Color, iconography, and text all reinforce status simultaneously."
+    },
+    {
+      "name": "Transparent Intelligence",
+      "description": "Show the agent's thinking in a structured execution log. Use numbered entries, action-type badges, and THINK entries in italic to make the agent's reasoning readable."
+    },
+    {
+      "name": "Warm Precision",
+      "description": "Cream background (#FDFBF9) instead of pure white. Sharp Inter typography for data, Instrument Serif only for page-level titles. No glassmorphism, no floating animations."
+    },
+    {
+      "name": "Static Layouts",
+      "description": "Panels are fixed-position with internal scroll. No floating, no transform animations on structural elements. Only pulse animations for live status indicators."
+    }
+  ],
+  "typography": {
+    "headings": {
+      "fontFamily": "Instrument Serif, serif",
+      "usage": "Page/session titles only (h1 in the header). Not for section labels or panel headers.",
+      "feel": "Editorial, Sophisticated"
+    },
+    "body": {
+      "fontFamily": "Inter, sans-serif",
+      "weights": ["Regular (400)", "Medium (500)", "Semibold (600)", "Bold (700)"],
+      "feel": "Legible, Functional, Neutral"
+    },
+    "monospace": {
+      "fontFamily": "JetBrains Mono, monospace",
+      "usage": "Session IDs, timestamps, URLs, action badge labels, code snippets"
+    },
+    "sectionLabels": {
+      "style": "text-xs font-bold uppercase tracking-wider text-gray-500",
+      "usage": "TASK PLAN, EXECUTION LOG, AGENT OBSERVABILITY panel headings"
+    }
+  },
+  "colors": {
+    "background": {
+      "page": "#FDFBF9 (cream — never pure white)",
+      "leftColumn": "#F9FAFB/50 (gray-50/50)",
+      "rightColumn": "#FFFFFF (white)",
+      "panelHeader": "#F9FAFB (gray-50)"
+    },
+    "text": {
+      "primary": "#111827 (Gray 900)",
+      "secondary": "#374151 (Gray 700)",
+      "muted": "#6B7280 (Gray 500)",
+      "faint": "#9CA3AF (Gray 400)"
+    },
+    "borders": {
+      "subtle": "#F3F4F6 (Gray 100)",
+      "default": "#E5E7EB (Gray 200)"
+    },
+    "accents": {
+      "orange": "#F97316 (brand-orange-500) — active states, focus rings",
+      "purple": "#A855F7 (brand-purple-500) — AI/THINK indicators"
+    },
+    "actionBadges": {
+      "NAVIGATE": "bg-blue-100 text-blue-700",
+      "THINK": "bg-purple-100 text-purple-700",
+      "CLICK": "bg-green-100 text-green-700",
+      "FILL": "bg-green-100 text-green-700",
+      "TYPE": "bg-green-100 text-green-700",
+      "FILL_AND_CLICK": "bg-green-100 text-green-700",
+      "SCREENSHOT": "bg-gray-100 text-gray-700",
+      "EXTRACT": "bg-orange-100 text-orange-700",
+      "WAIT": "bg-violet-100 text-violet-700",
+      "SCROLL": "bg-emerald-100 text-emerald-700",
+      "INTERVENTION_REQUIRED": "bg-red-100 text-red-700 border border-red-200"
+    },
+    "status": {
+      "running": "text-green-600, dot bg-green-500 animate-pulse",
+      "blocked": "text-red-600, dot bg-red-500 animate-pulse",
+      "completed": "text-gray-600, dot bg-gray-400",
+      "failed": "text-red-600, dot bg-red-500"
+    }
+  },
+  "layout": {
+    "pageStructure": "Full viewport height (h-screen), header fixed at top (h-16), main area fills remainder (flex-1 overflow-hidden)",
+    "split": "Left column 60% (w-3/5), Right column 40% (w-2/5)",
+    "leftColumn": "overflow-y-auto, border-r border-gray-200, bg-gray-50/50, p-6",
+    "rightColumn": "flex flex-col, bg-white — fixed header, scrollable body (flex-1 overflow-y-auto p-6)",
+    "spacing": "p-6 (24px) for panel padding, mb-6 (24px) between major sections, mb-8 (32px) between right panel sections"
+  },
+  "motion": {
+    "allowed": [
+      "animate-pulse — status dots and blocked-state indicators only",
+      "transition-colors — buttons and interactive elements"
+    ],
+    "forbidden": [
+      "animate-float — no floating on any structural element",
+      "backdrop-blur / glassmorphism — not used in session detail",
+      "scale transforms on panels or browser frame"
+    ]
+  }
+}
+

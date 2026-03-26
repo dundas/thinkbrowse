@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- ThinkBrowse Brand Icon - V2 (True Serif) -->
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#EA580C;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="512" height="512" rx="128" fill="url(#brandGradient)" />
+  
+  <!-- The "T" Monogram (High-Contrast Editorial Serif) -->
+  <g transform="translate(256, 256) skewX(-6) translate(-256, -256)">
+    <!-- Vertical Stem: Thick and elegant -->
+    <!-- Base foot with brackets -->
+    <path d="M185 390 L327 390 L327 370 L305 370 C285 370 280 360 280 345 L280 145 L232 145 L232 345 C232 360 227 370 207 370 L185 370 Z" fill="#FDFBF9" />
+    
+    <!-- Top Bar: Thin with sharp downward serifs -->
+    <path d="M115 145 L397 145 L397 185 L375 185 C355 185 350 170 350 155 L162 155 C162 170 157 185 137 185 L115 185 Z" fill="#FDFBF9" />
+  </g>
+  
+  <!-- The "Thinking" Spark -->
+  <circle cx="415" cy="97" r="32" fill="#FDFBF9" />
+  <circle cx="415" cy="97" r="20" fill="#A855F7" />
+</svg>

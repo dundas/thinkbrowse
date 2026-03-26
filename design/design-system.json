@@ -1,0 +1,289 @@
+{
+  "name": "ThinkBrowse Agentic Design System",
+  "version": "1.0.0",
+  "description": "Complete implementation guide for the ThinkBrowse design system. Includes tokens, components, and usage patterns.",
+  "framework": "Tailwind CSS v3 + React + TypeScript",
+  "documentation": {
+    "guide": "design/DESIGN_SYSTEM.md",
+    "components": "design/COMPONENTS.md",
+    "brand": "design/design.json"
+  },
+  "tokens": {
+    "colors": {
+      "background": {
+        "app": "bg-cream (#FDFBF9)",
+        "panel": "bg-white",
+        "glass": "bg-white/80 backdrop-blur-md",
+        "input": "bg-white"
+      },
+      "text": {
+        "heading": "text-gray-900",
+        "body": "text-gray-800",
+        "secondary": "text-gray-500",
+        "muted": "text-gray-400",
+        "placeholder": "placeholder-gray-400"
+      },
+      "border": {
+        "default": "border-gray-100",
+        "subtle": "border-gray-50",
+        "active": "border-gray-200",
+        "focus": "border-brand-orange-500"
+      },
+      "accent": {
+        "orange": {
+          "50": "bg-brand-orange-50 (#FFF7ED)",
+          "100": "bg-brand-orange-100 (#FFEDD5)",
+          "500": "bg-brand-orange-500 (#F97316)",
+          "600": "bg-brand-orange-600 (#EA580C)",
+          "text": "text-brand-orange-500",
+          "border": "border-brand-orange-100"
+        },
+        "purple": {
+          "50": "bg-brand-purple-50 (#FAF5FF)",
+          "100": "bg-brand-purple-100 (#F3E8FF)",
+          "500": "bg-brand-purple-500 (#A855F7)",
+          "600": "bg-brand-purple-600 (#9333EA)",
+          "text": "text-brand-purple-500"
+        }
+      }
+    },
+    "typography": {
+      "fontFamily": {
+        "serif": "font-serif (Instrument Serif, Georgia, serif)",
+        "sans": "font-sans (Inter, -apple-system, sans-serif)",
+        "mono": "font-mono (JetBrains Mono, Monaco, monospace)"
+      },
+      "weights": {
+        "light": "font-light (300)",
+        "normal": "font-normal (400)",
+        "medium": "font-medium (500)",
+        "semibold": "font-semibold (600)",
+        "bold": "font-bold (700)"
+      },
+      "sizes": {
+        "xs": "text-xs (12px)",
+        "sm": "text-sm (14px)",
+        "base": "text-base (16px)",
+        "lg": "text-lg (18px)",
+        "xl": "text-xl (20px)",
+        "2xl": "text-2xl (24px)",
+        "3xl": "text-3xl (30px)",
+        "4xl": "text-4xl (36px)",
+        "5xl": "text-5xl (48px)"
+      }
+    },
+    "spacing": {
+      "section": "py-20 (80px vertical)",
+      "card": "p-6 (24px all sides)",
+      "tight": "gap-2 (8px)",
+      "medium": "gap-4 (16px)",
+      "wide": "gap-8 (32px)"
+    },
+    "radius": {
+      "panel": "rounded-panel (16px)",
+      "card": "rounded-card (12px)",
+      "input": "rounded-input (20px)",
+      "button": "rounded-button (12px)",
+      "pill": "rounded-pill (9999px)"
+    },
+    "shadows": {
+      "soft": "shadow-soft (subtle elevation)",
+      "medium": "shadow-medium (cards, buttons)",
+      "strong": "shadow-strong (panels, modals)",
+      "glowOrange": "shadow-glow-orange (active states)",
+      "glowPurple": "shadow-glow-purple (AI processing)"
+    },
+    "animations": {
+      "float": "animate-float (6s floating loop)",
+      "pulse": "animate-pulse (2s opacity pulse)",
+      "fadeIn": "animate-fadeIn (0.5s content appear)",
+      "slideIn": "animate-slideIn (0.3s side entry)"
+    }
+  },
+  "components": {
+    "layout": {
+      "pageShell": "h-screen flex flex-col overflow-hidden bg-cream",
+      "header": "bg-white border-b border-gray-200 shrink-0 z-10 h-16 px-6 flex items-center justify-between",
+      "mainArea": "flex-1 flex overflow-hidden",
+      "leftColumn": "w-3/5 flex flex-col p-6 overflow-y-auto border-r border-gray-200 bg-gray-50/50",
+      "rightColumn": "w-2/5 flex flex-col bg-white border-l border-gray-200"
+    },
+    "pageHeader": {
+      "title": "font-serif text-xl text-gray-900",
+      "meta": "flex items-center gap-2 text-xs text-gray-500 mt-0.5",
+      "statusDot": "w-2 h-2 rounded-full animate-pulse",
+      "statusLabel": "font-medium uppercase tracking-wider text-xs",
+      "sessionId": "font-mono"
+    },
+    "panelHeader": {
+      "container": "p-4 border-b border-gray-100 bg-gray-50 shrink-0",
+      "label": "text-sm font-bold text-gray-900 uppercase tracking-wider"
+    },
+    "sectionHeading": "text-xs font-bold text-gray-500 uppercase tracking-wider mb-4",
+    "tabBar": {
+      "container": "flex gap-1 bg-white border border-gray-200 p-1 rounded-lg w-fit shadow-sm",
+      "active": "px-4 py-1.5 text-sm font-medium bg-gray-100 text-gray-900 rounded-md",
+      "inactive": "px-4 py-1.5 text-sm font-medium text-gray-600 hover:text-gray-900 rounded-md transition-colors",
+      "badge": "bg-red-100 text-red-700 text-xs px-1.5 py-0.5 rounded-full"
+    },
+    "button": {
+      "primary": {
+        "class": "px-4 py-2 text-sm font-medium rounded-button transition-colors",
+        "danger": "bg-red-600 text-white hover:bg-red-700 shadow-sm",
+        "default": "bg-gray-900 text-white hover:bg-gray-800"
+      },
+      "secondary": {
+        "class": "px-3 py-1.5 text-sm font-medium rounded-button border transition-colors flex items-center gap-2",
+        "default": "text-gray-600 bg-white border-gray-200 hover:bg-gray-50",
+        "danger": "text-red-700 bg-white border-red-200 hover:bg-red-50"
+      },
+      "link": "text-xs text-blue-600 hover:underline flex items-center gap-1"
+    },
+    "interventionBanner": {
+      "container": "mb-6 bg-red-50 border border-red-200 rounded-xl p-5 shadow-sm",
+      "iconWrapper": "p-2 bg-red-100 rounded-lg shrink-0 mt-1",
+      "title": "text-lg font-semibold text-red-900",
+      "body": "text-sm text-red-700 mt-1 mb-4"
+    },
+    "browserFrame": {
+      "container": "flex-1 bg-white border border-gray-200 rounded-panel shadow-strong overflow-hidden flex flex-col min-h-[500px]",
+      "chromeBar": "h-10 bg-gray-100 border-b border-gray-200 flex items-center px-4 gap-4 shrink-0",
+      "trafficLights": "flex gap-1.5",
+      "trafficDot": "w-3 h-3 rounded-full",
+      "urlBarWrapper": "flex-1 flex justify-center",
+      "urlBar": "bg-white rounded-md px-4 py-1 flex items-center gap-2 max-w-md w-full border border-gray-200 shadow-sm",
+      "urlText": "text-xs text-gray-600 font-mono truncate",
+      "note": "Static layout only — no animate-float, no backdrop-blur, no scale transforms"
+    },
+    "taskStep": {
+      "container": "flex items-start gap-3",
+      "iconDone": "mt-0.5 w-5 h-5 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0",
+      "iconFailed": "mt-0.5 w-5 h-5 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0",
+      "iconPending": "mt-0.5 w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center shrink-0 opacity-40",
+      "textDone": "text-sm text-gray-600",
+      "textFailed": "text-sm font-medium text-gray-900",
+      "textPending": "text-sm text-gray-500 opacity-40"
+    },
+    "executionLog": {
+      "list": "space-y-6 relative",
+      "connectingLine": "absolute left-[15px] top-[24px] bottom-6 w-0.5 bg-gray-100",
+      "entry": "relative pl-10",
+      "numberCircle": "absolute left-0 top-0 w-8 h-8 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center z-10",
+      "numberText": "text-xs font-mono text-gray-500",
+      "card": "bg-gray-50 border border-gray-200 rounded-lg p-3",
+      "timestamp": "text-xs text-gray-400",
+      "normalText": "text-sm text-gray-900",
+      "thinkText": "text-sm text-gray-700 italic",
+      "interventionCircle": "absolute left-0 top-0 w-8 h-8 bg-red-100 border-2 border-red-500 rounded-full flex items-center justify-center z-10 animate-pulse",
+      "interventionCard": "bg-red-50 border border-red-200 rounded-lg p-3 shadow-sm",
+      "interventionTitle": "text-sm text-red-900 font-medium mb-1",
+      "interventionBody": "text-xs text-red-700 italic mb-3"
+    },
+    "actionBadge": {
+      "base": "text-xs font-mono px-1.5 py-0.5 rounded",
+      "NAVIGATE": "bg-blue-100 text-blue-700",
+      "THINK": "bg-purple-100 text-purple-700",
+      "CLICK": "bg-green-100 text-green-700",
+      "FILL": "bg-green-100 text-green-700",
+      "TYPE": "bg-green-100 text-green-700",
+      "FILL_AND_CLICK": "bg-green-100 text-green-700",
+      "SCREENSHOT": "bg-gray-100 text-gray-700",
+      "EXTRACT": "bg-orange-100 text-orange-700",
+      "WAIT": "bg-violet-100 text-violet-700",
+      "SCROLL": "bg-emerald-100 text-emerald-700",
+      "INTERVENTION_REQUIRED": "bg-red-100 text-red-700 border border-red-200"
+    },
+    "card": {
+      "standard": {
+        "class": "p-3 rounded-card border border-gray-100 bg-white hover:bg-gray-50 transition-colors cursor-pointer",
+        "usage": "Regular list items, search results",
+        "file": "frontend/src/components/Card.tsx"
+      },
+      "highlight": {
+        "class": "p-3 rounded-card border border-brand-orange-100 bg-brand-orange-50 hover:bg-brand-orange-100 transition-colors cursor-pointer",
+        "usage": "Featured results, important items",
+        "file": "frontend/src/components/Card.tsx"
+      }
+    },
+    "input": {
+      "agent": {
+        "wrapper": "relative w-full max-w-2xl",
+        "container": "relative bg-white rounded-input shadow-medium border border-gray-100 p-2 flex items-center gap-2 focus-within:ring-2 focus-within:ring-brand-orange-100 transition-shadow",
+        "field": "flex-1 bg-transparent border-none outline-none text-lg placeholder-gray-400 text-gray-800 h-10",
+        "usage": "Main task input on landing/activity pages",
+        "file": "frontend/src/components/Input.tsx"
+      }
+    },
+    "glassPanel": {
+      "note": "DEPRECATED for session detail pages. Use plain bg-white panels instead.",
+      "usage": "Landing page only, not in session detail"
+    },
+    "thoughtStream": {
+      "note": "See executionLog component above for the session detail spec. ThoughtStream.tsx implements this.",
+      "file": "frontend/src/components/ThoughtStream.tsx"
+    }
+  },
+  "patterns": {
+    "heroSection": {
+      "description": "Landing page hero with centered content and agent input",
+      "example": "<section className=\"max-w-4xl mx-auto px-6 py-20 text-center\"><h1 className=\"font-serif italic text-5xl mb-6\">ThinkBrowse</h1><AgentInput /></section>"
+    },
+    "resultGrid": {
+      "description": "Responsive grid of result cards",
+      "example": "<div className=\"grid md:grid-cols-2 lg:grid-cols-3 gap-8\">{results.map(r => <ResultCard key={r.id} {...r} />)}</div>"
+    },
+    "liveSession": {
+      "description": "Glass panel with browser frame, thought stream, and activity logs",
+      "example": "<GlassPanel title=\"Live Session\"><BrowserFrame isLive={true}><ScreenshotTimeline /></BrowserFrame><ThoughtStream /><ActivityLogs /></GlassPanel>"
+    }
+  },
+  "accessibility": {
+    "focus": {
+      "button": "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-orange-500 focus-visible:ring-offset-2",
+      "input": "focus:outline-none focus:ring-2 focus:ring-brand-orange-100"
+    },
+    "colorContrast": {
+      "bodyText": "Gray 900 on white - WCAG AAA",
+      "secondaryText": "Gray 500 on white - WCAG AA",
+      "orangeAccent": "Orange 500 on white - WCAG AA"
+    },
+    "aria": {
+      "buttons": "Include aria-label for icon-only buttons",
+      "status": "Use aria-live for dynamic content updates",
+      "navigation": "Ensure keyboard navigation with Tab/Enter/Escape"
+    }
+  },
+  "responsive": {
+    "breakpoints": {
+      "sm": "640px - Small tablets",
+      "md": "768px - Tablets",
+      "lg": "1024px - Laptops",
+      "xl": "1280px - Desktops",
+      "2xl": "1536px - Large screens"
+    },
+    "strategy": "Desktop-first for main site, graceful mobile degradation",
+    "gridPattern": "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+  },
+  "usage": {
+    "do": [
+      "Use cream (#FDFBF9) as page background — never pure white",
+      "Use Instrument Serif only for page-level session/task titles",
+      "Use JetBrains Mono for all technical data: IDs, timestamps, URLs, badge labels",
+      "Color-code action badges consistently per the actionBadge component above",
+      "Stack Task Plan and Execution Log vertically in the right panel — both visible by scrolling",
+      "Use numbered white circles for execution log entries",
+      "Render THINK entries in italic",
+      "Use red-tinted cards + animated pulse circle for INTERVENTION REQUIRED entries",
+      "Use pill-style tab bars (bg-gray-100 active state) for left panel tabs"
+    ],
+    "dont": [
+      "Don't use tabs in the right observability panel — stacked layout only",
+      "Don't apply animate-float to any structural element in session detail",
+      "Don't use backdrop-blur or glassmorphism in session detail pages",
+      "Don't add the Artifacts tab to the left panel (not in spec)",
+      "Don't use orange underline indicators for active tabs — use pill/bg-gray-100",
+      "Don't use scale transforms on the browser frame"
+    ]
+  }
+}
+
